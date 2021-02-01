@@ -10,6 +10,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioPlayer.h"
+#include "Mixer.h"
 
 class AudioPlayer;
 //==============================================================================
@@ -30,6 +31,7 @@ public:
 
 private:
 	OwnedArray<AudioPlayer> my_audio_players;
+	ScopedPointer<Mixer> my_mixer;
     //==============================================================================
     // Your private member variables go here...
 

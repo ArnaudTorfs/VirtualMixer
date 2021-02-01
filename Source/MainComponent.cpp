@@ -11,6 +11,7 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
+	my_mixer = new Mixer();
 
 	my_audio_players = OwnedArray<AudioPlayer>();
 
@@ -45,9 +46,22 @@ void MainComponent::resized()
 
 	auto r = getLocalBounds();
 	int reduceAmount = 3;
-	int playerWidth = r.getWidth() / my_audio_players.size();
-	for (AudioPlayer* my_audio_player : my_audio_players)
+
+	int number_of_elements = my_audio_players.size() + 1;
+	int playerWidth = r.getWidth() / number_of_elements;
+	for (int element_index = 0; element_index < number_of_elements; ++element_index)
 	{
-		my_audio_player->setBounds(r.removeFromLeft(playerWidth).reduced(reduceAmount));
+		if (element_index < number_of_elements / 2)
+		{
+			my_audio_players[element_index]->setBounds(r.removeFromLeft(playerWidth));
+		}
+		else if(element_index == number_of_elements / 2)
+		{
+			my_mixer->setBounds(r.removeFromLeft(playerWidth));
+		}
+		else
+		{
+			my_audio_players[element_index-1]->setBounds(r.removeFromLeft(playerWidth));
+		}
 	}
 }
