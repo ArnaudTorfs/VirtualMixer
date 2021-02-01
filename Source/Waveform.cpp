@@ -18,6 +18,7 @@ Waveform::Waveform(AudioTransportSource& transportSource_, int sourceSamplesPerT
 {
 	formatManager.registerBasicFormats();
 	transportPosition.setStart(0.0);
+
 	thumbnail_total = std::make_unique<AudioThumbnail>(sourceSamplesPerThumbnailSample, formatManager, thumbnailCache);
 	thumbnail_zoomed = std::make_unique<AudioThumbnail>(sourceSamplesPerThumbnailSample, formatManager, thumbnailCache);
 
@@ -54,8 +55,8 @@ void Waveform::paint(Graphics& g)
 			thumbnail_total->drawChannel(g, topThumbArea.reduced(2),
 				0.0, thumbnail_total->getTotalLength(), 0, 1.0f);
 
-			//thumbnail_zoomed->drawChannel(g, bottomThumbArea.reduced(2),
-			//	transportPosition.getStart(), transportPosition.getEnd(), 0, 1.0f);
+			thumbnail_zoomed->drawChannel(g, bottomThumbArea.reduced(2),
+				transportPosition.getStart(), transportPosition.getEnd(), 0, 1.0f);
 
 
 		}

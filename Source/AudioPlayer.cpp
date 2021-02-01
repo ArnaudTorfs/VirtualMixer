@@ -36,19 +36,19 @@ AudioPlayer::AudioPlayer()
 	//C++14 style : Making smart pointer and addAndMakeVisible().
 	openButton = std::make_unique<TextButton>("openButton");
 	addAndMakeVisible(openButton.get());
-	openButton->setButtonText("Open Audio File...");
+	openButton->setButtonText("Open");
 	openButton->addListener(this);
 
 	playButton = std::make_unique<TextButton>("playButton");
 	addAndMakeVisible(playButton.get());
-	playButton->setButtonText("Play...");
+	playButton->setButtonText("Play");
 	playButton->addListener(this);
 	playButton->setEnabled(false);
 	playButton->setColour(TextButton::buttonColourId, Colours::green);
 
 	stopButton = std::make_unique<TextButton>("stopButton");
 	addAndMakeVisible(stopButton.get());
-	stopButton->setButtonText("Stop...");
+	stopButton->setButtonText("Stop");
 	stopButton->addListener(this);
 	stopButton->setEnabled(false);
 	stopButton->setColour(TextButton::buttonColourId, Colours::red);
@@ -58,11 +58,6 @@ AudioPlayer::AudioPlayer()
 	settingButton->setButtonText("Audio Preference");
 	settingButton->addListener(this);
 
-	transportFollowButton = std::make_unique<ToggleButton>("transportFollowToggle");
-	addAndMakeVisible(transportFollowButton.get());
-	transportFollowButton->setButtonText("Follow transport");
-	transportFollowButton->addListener(this);
-
 	deviceManager.initialise(0, 2, nullptr, true);
 	deviceManager.addChangeListener(this);
 	sourcePlayer.setSource(&transportSource);
@@ -71,7 +66,6 @@ AudioPlayer::AudioPlayer()
 	addAndMakeVisible(waveform.get());
 	transportSource.addChangeListener(this);
 
-	setSize(1280, 720);
 	setOpaque(false);
 }
 
@@ -105,14 +99,13 @@ void AudioPlayer::paint(Graphics& g)
 void AudioPlayer::resized()
 {
 	auto r = getLocalBounds();
-	auto transportBounds = r.removeFromTop(30);
-	int transportButtonWidth = transportBounds.getWidth() / 5;
-	int reduceAmount = 3;
-	openButton->setBounds(transportBounds.removeFromLeft(transportButtonWidth).reduced(reduceAmount));
-	settingButton->setBounds(transportBounds.removeFromLeft(transportButtonWidth).reduced(reduceAmount));
-	playButton->setBounds(transportBounds.removeFromLeft(transportButtonWidth).reduced(reduceAmount));
-	stopButton->setBounds(transportBounds.removeFromLeft(transportButtonWidth).reduced(reduceAmount));
-	transportFollowButton->setBounds(transportBounds.reduced(reduceAmount));
+	auto transport_bounds = r.removeFromBottom(30);
+	const int transport_button_width = transport_bounds.getWidth() / 4;
+	const int reduce_amount = 3;
+	openButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
+	settingButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
+	playButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
+	stopButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
 	waveform->setBounds(r);
 }
 
@@ -133,10 +126,6 @@ void AudioPlayer::buttonClicked(Button *button)
 	else if (button == stopButton.get())
 	{
 		stopButtonClicked();
-	}
-	else if (button == transportFollowButton.get())
-	{
-		waveform->setTransportFollowing(transportFollowButton->getToggleState());
 	}
 }
 

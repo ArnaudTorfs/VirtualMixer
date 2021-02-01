@@ -29,7 +29,7 @@ public:
     void resized() override;
 
 private:
-	ScopedPointer<AudioPlayer> my_audio_player_;
+	OwnedArray<AudioPlayer> my_audio_players;
     //==============================================================================
     // Your private member variables go here...
 
