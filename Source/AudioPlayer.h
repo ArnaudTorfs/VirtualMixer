@@ -58,6 +58,8 @@ public:
 	void resized() override;
 	void buttonClicked(Button *button) override;
 	//==============================================================================
+	float getAudioLevel() const { return audio_level_;};
+	void setAudioLevel(float value);
 private:
 	void openButtonClicked();
 	void settingButtonClicked();
@@ -80,6 +82,8 @@ private:
 	AudioDeviceManager deviceManager;
 	std::unique_ptr<Waveform> waveform;
 	TransportState state;
+
+	float audio_level_;
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer);
 };

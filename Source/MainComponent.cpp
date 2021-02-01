@@ -11,7 +11,6 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-	my_mixer = new Mixer();
 
 	my_audio_players = OwnedArray<AudioPlayer>();
 
@@ -22,6 +21,10 @@ MainComponent::MainComponent()
 	{
 		addAndMakeVisible(my_audio_player);
 	}
+
+
+	my_mixer = new Mixer(&my_audio_players);
+	addAndMakeVisible(my_mixer);
 
 	setSize(600, 400);
 

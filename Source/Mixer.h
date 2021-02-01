@@ -21,43 +21,53 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "AudioPlayer.h"
 //[/Headers]
 
 
 
 //==============================================================================
 /**
-                                                                    //[Comments]
-    An auto-generated component, created by the Projucer.
+																	//[Comments]
+	An auto-generated component, created by the Projucer.
 
-    Describe your class and how it works here!
-                                                                    //[/Comments]
+	Describe your class and how it works here!
+																	//[/Comments]
 */
-class Mixer  : public Component
+class Mixer : public Component, public Slider::Listener
 {
 public:
-    //==============================================================================
-    Mixer ();
-    ~Mixer();
+	//==============================================================================
+	Mixer(OwnedArray<AudioPlayer>* channels);
+	~Mixer();
 
-    //==============================================================================
-    //[UserMethods]     -- You can add your own custom methods in this section.
-    //[/UserMethods]
+	//==============================================================================
+	//[UserMethods]     -- You can add your own custom methods in this section.
+	//[/UserMethods]
 
-    void paint (Graphics& g) override;
-    void resized() override;
+	void paint(Graphics& g) override;
+	void resized() override;
+
+	void sliderValueChanged(Slider *slider)override;
+
 
 
 
 private:
-    //[UserVariables]   -- You can add your own custom variables in this section.
-    //[/UserVariables]
-
-    //==============================================================================
+	OwnedArray<Slider> sliders_;
+	int number_of_channels_;
 
 
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Mixer)
+	Rectangle<int>* channels_rectangles_;
+	OwnedArray<AudioPlayer>* channels_;
+	//[UserVariables]   -- You can add your own custom variables in this section.
+	//[/UserVariables]
+
+	//==============================================================================
+
+
+	//==============================================================================
+	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Mixer)
 };
 
 //[EndFile] You can add extra defines here...

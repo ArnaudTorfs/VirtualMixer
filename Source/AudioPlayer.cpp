@@ -129,6 +129,14 @@ void AudioPlayer::buttonClicked(Button *button)
 	}
 }
 
+void AudioPlayer::setAudioLevel(float value)
+{
+//Receive a value between 0 and 10.0
+	audio_level_ = value/10;
+//Set a Value between 0 and 1;
+	transportSource.setGain(audio_level_);
+}
+
 //==============================================================================
 //private
 void AudioPlayer::openButtonClicked()
