@@ -81,10 +81,10 @@ void MainComponent::handleIncomingMidiMessage(MidiInput* source, const MidiMessa
 	int x = 5;
 }
 
-void MainComponent::setting_button_clicked()
+void MainComponent::setting_button_clicked() const
 {
 	std::cout << "settingButton" << std::endl;
-	bool showMIDIInputOptions = false;
+	bool showMIDIInputOptions = true;
 	bool showMIDIOutputOption = false;
 	bool showChannelAsSterepPairs = true;
 	bool hideAdvancedOptions = false;
@@ -100,7 +100,7 @@ void MainComponent::setting_button_clicked()
 	DialogWindow::showModalDialog(String("Audio Settings"),
 		&settings,
 		TopLevelWindow::getTopLevelWindow(0),
-		Colours::white,
+		Colours::wheat,
 		true,
 		true,
 		true);

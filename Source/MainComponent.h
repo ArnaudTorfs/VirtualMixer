@@ -32,7 +32,7 @@ public:
 	void changeListenerCallback(ChangeBroadcaster* source) override;
     //==============================================================================
 	void handleIncomingMidiMessage(MidiInput* source, const MidiMessage& message) override;
-    void setting_button_clicked();
+    void setting_button_clicked() const;
     //==============================================================================
 	void buttonClicked(Button*) override;
 
