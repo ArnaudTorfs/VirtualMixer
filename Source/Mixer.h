@@ -55,6 +55,8 @@ public:
 
 private:
 	OwnedArray<Slider> sliders_;
+
+	ScopedPointer<Slider> cross_fader;
 	int number_of_channels_;
 
 

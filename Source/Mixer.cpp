@@ -53,6 +53,11 @@ Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels) {
 
 		sliders_.add(temp_slider);
 	}
+
+	cross_fader = new Slider();
+	cross_fader->setSliderStyle(Slider::LinearBar);
+	addAndMakeVisible(cross_fader);
+	cross_fader->addListener(this);
 }
 
 Mixer::~Mixer()
@@ -88,6 +93,8 @@ void Mixer::resized()
 	//[UserResized] Add your own custom resize handling here..
 	//[/UserResized]
 	auto r = getLocalBounds();
+
+	auto cross_fader_rectangle = r.removeFromBottom(r.getHeight() / 6);
 	const int channel_width = r.getWidth() / number_of_channels_;
 	const int channel_height = r.getHeight();
 
@@ -96,8 +103,10 @@ void Mixer::resized()
 	for (int channel = 0; channel < number_of_channels_; ++channel)
 	{
 		channels_rectangles_[channel] = r.removeFromLeft(channel_width);
-		sliders_[channel]->setBounds(channels_rectangles_[channel].removeFromBottom(channel_height / 2));
+		sliders_[channel]->setBounds(channels_rectangles_[channel].removeFromBottom(channel_height / 2).reduced(channel_width/5, 0));
 	}
+
+	cross_fader->setBounds(cross_fader_rectangle.reduced(channel_width/3, channel_height/60));
 
 }
 
