@@ -28,11 +28,11 @@
 
 //==============================================================================
 /**
-                                                                    //[Comments]
+																	//[Comments]
 	An auto-generated component, created by the Projucer.
 
 	Describe your class and how it works here!
-                                                                    //[/Comments]
+																	//[/Comments]
 */
 enum class TransportState : int {
 	NoFile,
@@ -44,8 +44,8 @@ enum class TransportState : int {
 class AudioPlayer :
 	public AudioAppComponent,
 	public Button::Listener,
-	public ChangeListener
-{
+	public ChangeListener,
+	public FileDragAndDropTarget {
 public:
 	AudioPlayer();
 	~AudioPlayer();
@@ -58,7 +58,10 @@ public:
 	void resized() override;
 	void buttonClicked(Button *button) override;
 	//==============================================================================
-	float getAudioLevel() const { return audio_level_;};
+	void filesDropped(const StringArray&, int, int) override;
+	bool isInterestedInFileDrag(const StringArray& files) override;
+	//==============================================================================
+	float getAudioLevel() const { return audio_level_; };
 	void setAudioLevel(float value);
 private:
 	void openButtonClicked();

@@ -129,6 +129,25 @@ void AudioPlayer::buttonClicked(Button *button)
 	}
 }
 
+void AudioPlayer::filesDropped(const StringArray& file_string , int, int)
+{
+		File file(file_string[0]);
+		waveform->readFromFile(file);
+		setAudioFile(&file);
+		changeTransportState(TransportState::Stop);
+}
+
+bool AudioPlayer::isInterestedInFileDrag(const StringArray& files)
+{
+	const String file_name = files[0];
+	if (file_name.contains(".wav"))
+	{
+		return true;
+		
+	}
+	return false;
+}
+
 void AudioPlayer::setAudioLevel(float value)
 {
 //Receive a value between 0 and 10.0

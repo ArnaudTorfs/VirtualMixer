@@ -68,7 +68,7 @@ private:
 
 
 
-	Rectangle<int>* channels_rectangles_;
+	Rectangle<int>* channels_rectangles_{};
 	OwnedArray<AudioPlayer>* channels_;
 	//[UserVariables]   -- You can add your own custom variables in this section.
 	//[/UserVariables]

@@ -30,7 +30,7 @@ void myLookAndFill::drawLinearSlider(Graphics& g, int x, int y, int width, int h
 	float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider&)
 {
 	const int fader_slider_width = width * 0.06;
-	const auto fader_slider_rectangle = Rectangle<int>(width / 2 -fader_slider_width/2 , 0, fader_slider_width, height+y);
+	const auto fader_slider_rectangle = Rectangle<int>(width / 2 - fader_slider_width / 2, 0, fader_slider_width, height + y);
 	g.setColour(Colours::black);
 	g.fillRect(fader_slider_rectangle);
 
@@ -39,7 +39,7 @@ void myLookAndFill::drawLinearSlider(Graphics& g, int x, int y, int width, int h
 	const int slider_width = width * 0.8;
 
 	g.setColour(Colours::darkgrey);
-	const Rectangle<int> my_rectangle = Rectangle<int>(x+ width*0.1, sliderPos - (slider_height / 2.), slider_width, (slider_height / 2.));
+	const Rectangle<int> my_rectangle = Rectangle<int>(x + width * 0.1, sliderPos - (slider_height / 2.), slider_width, (slider_height / 2.));
 	g.fillRect(my_rectangle);
 }
 
