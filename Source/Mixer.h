@@ -55,6 +55,8 @@ public:
 
 	void sliderValueChanged(Slider *slider)override;
 
+	void set_slider_value(int channel, float value) const;
+
 
 
 

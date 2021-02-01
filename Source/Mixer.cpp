@@ -144,6 +144,14 @@ void Mixer::sliderValueChanged(Slider* slider)
 	}
 }
 
+void Mixer::set_slider_value(int channel, float value) const
+{
+	if (channel<number_of_channels_)
+	{
+		sliders_[channel]->setValue(value);
+	}
+}
+
 
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 //[/MiscUserCode]

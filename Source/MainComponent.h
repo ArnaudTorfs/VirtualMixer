@@ -40,9 +40,17 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+
+
 private:
+	void postMessageToList(const juce::MidiMessage& message, const juce::String& source);
+	void setMidiInput(int index);
+	void set_midi_device_choice();
+
 	OwnedArray<AudioPlayer> my_audio_players;
 	ScopedPointer<Mixer> my_mixer;
+
+	ComboBox midiInputList;                    
 
 	Rectangle<int> settings_bar;
 
@@ -50,9 +58,25 @@ private:
 	std::unique_ptr<TextButton> settingButton;
 	AudioFormatManager formatManager;
 
+	int midi_input_device_index;
+
     //==============================================================================
     // Your private member variables go here...
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
+};
+
+class IncomingMessageCallback : public juce::CallbackMessage
+{
+public:
+	IncomingMessageCallback(MainComponent* o, const juce::MidiMessage& m, Mixer*  _mixer)
+		: owner(o), message(m), mixer(_mixer)
+	{}
+
+	void messageCallback() override;
+
+	Component::SafePointer<MainComponent> owner;
+	juce::MidiMessage message;
+	Mixer* mixer;
 };

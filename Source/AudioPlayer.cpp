@@ -60,7 +60,6 @@ AudioPlayer::AudioPlayer(AudioFormatManager* formatManager, AudioDeviceManager* 
 	//transportSource.addChangeListener(this);
 
 
-
 	setOpaque(false);
 }
 
@@ -105,12 +104,12 @@ void AudioPlayer::buttonClicked(Button *button)
 	}
 }
 
-void AudioPlayer::filesDropped(const StringArray& file_string , int, int)
+void AudioPlayer::filesDropped(const StringArray& file_string, int, int)
 {
-		File file(file_string[0]);
-		waveform->readFromFile(file);
-		setAudioFile(&file);
-		changeTransportState(TransportState::Stop);
+	File file(file_string[0]);
+	waveform->readFromFile(file);
+	setAudioFile(&file);
+	changeTransportState(TransportState::Stop);
 }
 
 bool AudioPlayer::isInterestedInFileDrag(const StringArray& files)
@@ -119,16 +118,16 @@ bool AudioPlayer::isInterestedInFileDrag(const StringArray& files)
 	if (file_name.contains(".wav"))
 	{
 		return true;
-		
+
 	}
 	return false;
 }
 
 void AudioPlayer::setAudioLevel(float value)
 {
-//Receive a value between 0 and 10.0
-	audio_level_ = value/10;
-//Set a Value between 0 and 1;
+	//Receive a value between 0 and 10.0
+	audio_level_ = value / 10;
+	//Set a Value between 0 and 1;
 	transportSource.setGain(audio_level_);
 }
 
@@ -235,6 +234,7 @@ void AudioPlayer::setAudioFile(File* file)
 
 
 
+
 //[MiscUserCode] You can add your own definitions of your custom methods or any other code here...
 //[/MiscUserCode]
 
@@ -243,15 +243,15 @@ void AudioPlayer::setAudioFile(File* file)
 #if 0
 /*  -- Projucer information section --
 
-    This is where the Projucer stores the metadata that describe this GUI layout, so
-    make changes in here at your peril!
+	This is where the Projucer stores the metadata that describe this GUI layout, so
+	make changes in here at your peril!
 
 BEGIN_JUCER_METADATA
 
 <JUCER_COMPONENT documentType="Component" className="AudioPlayer" componentName=""
-                 parentClasses="public Component" constructorParams="" variableInitialisers=""
-                 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
-                 fixedSize="0" initialWidth="600" initialHeight="400">
+				 parentClasses="public Component" constructorParams="" variableInitialisers=""
+				 snapPixels="8" snapActive="1" snapShown="1" overlayOpacity="0.330"
+				 fixedSize="0" initialWidth="600" initialHeight="400">
   <BACKGROUND backgroundColour="ff323e44"/>
 </JUCER_COMPONENT>
 

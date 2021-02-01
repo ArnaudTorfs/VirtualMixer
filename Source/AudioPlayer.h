@@ -44,7 +44,9 @@ enum class TransportState : int {
 class AudioPlayer :
 	public Component,
 	public Button::Listener,
-	public FileDragAndDropTarget {
+	public FileDragAndDropTarget
+
+{
 public:
 	AudioPlayer(AudioFormatManager* formatManager, AudioDeviceManager* deviceManager);
 	~AudioPlayer();
@@ -65,6 +67,8 @@ private:
 	void stopButtonClicked();
 	void changeTransportState(TransportState newState);
 	void setAudioFile(File* file);
+
+
 	//==============================================================================
 	// Your private member variables go here...
 	std::unique_ptr<TextButton> openButton;
@@ -77,9 +81,11 @@ private:
 	std::unique_ptr<Waveform> waveform;
 	TransportState state;
 
+
 	float audio_level_;
 	AudioFormatManager* format_manager_;
 	AudioDeviceManager* device_manager_;
+
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer);
 };
