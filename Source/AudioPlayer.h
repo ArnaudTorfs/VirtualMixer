@@ -42,17 +42,13 @@ enum class TransportState : int {
 };
 
 class AudioPlayer :
-	public AudioAppComponent,
+	public Component,
 	public Button::Listener,
-	public ChangeListener,
 	public FileDragAndDropTarget {
 public:
-	AudioPlayer();
+	AudioPlayer(AudioFormatManager* formatManager, AudioDeviceManager* deviceManager);
 	~AudioPlayer();
 	//==============================================================================
-	void prepareToPlay(int samplesPerBlockExpected, double sampleRate) override;
-	void getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill) override;
-	void releaseResources() override;
 	//==============================================================================
 	void paint(Graphics& g) override;
 	void resized() override;
@@ -65,10 +61,8 @@ public:
 	void setAudioLevel(float value);
 private:
 	void openButtonClicked();
-	void settingButtonClicked();
 	void playButtonClicked();
 	void stopButtonClicked();
-	void changeListenerCallback(ChangeBroadcaster* source) override;
 	void changeTransportState(TransportState newState);
 	void setAudioFile(File* file);
 	//==============================================================================
@@ -76,17 +70,16 @@ private:
 	std::unique_ptr<TextButton> openButton;
 	std::unique_ptr<TextButton> playButton;
 	std::unique_ptr<TextButton> stopButton;
-	std::unique_ptr<TextButton> settingButton;
 	std::unique_ptr<AudioFormatReaderSource> readerSource;
 	std::unique_ptr<AudioFormatReader> formatReader;
-	AudioFormatManager formatManager;
 	AudioSourcePlayer sourcePlayer;
 	AudioTransportSource transportSource;
-	AudioDeviceManager deviceManager;
 	std::unique_ptr<Waveform> waveform;
 	TransportState state;
 
 	float audio_level_;
+	AudioFormatManager* format_manager_;
+	AudioDeviceManager* device_manager_;
 	//==============================================================================
 	JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(AudioPlayer);
 };

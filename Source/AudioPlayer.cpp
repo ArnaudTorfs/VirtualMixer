@@ -27,11 +27,10 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-AudioPlayer::AudioPlayer()
+AudioPlayer::AudioPlayer(AudioFormatManager* formatManager, AudioDeviceManager* deviceManager)
 	:
-	state(TransportState::NoFile)
+	state(TransportState::NoFile), format_manager_(formatManager), device_manager_(deviceManager)
 {
-	formatManager.registerBasicFormats();
 
 	//C++14 style : Making smart pointer and addAndMakeVisible().
 	openButton = std::make_unique<TextButton>("openButton");
@@ -53,42 +52,24 @@ AudioPlayer::AudioPlayer()
 	stopButton->setEnabled(false);
 	stopButton->setColour(TextButton::buttonColourId, Colours::red);
 
-	settingButton = std::make_unique<TextButton>("settingButton");
-	addAndMakeVisible(settingButton.get());
-	settingButton->setButtonText("Audio Preference");
-	settingButton->addListener(this);
 
-	deviceManager.initialise(0, 2, nullptr, true);
-	deviceManager.addChangeListener(this);
 	sourcePlayer.setSource(&transportSource);
-	deviceManager.addAudioCallback(&sourcePlayer);
+	device_manager_->addAudioCallback(&sourcePlayer);
 	waveform = std::make_unique<Waveform>(transportSource, 512);
 	addAndMakeVisible(waveform.get());
-	transportSource.addChangeListener(this);
+	//transportSource.addChangeListener(this);
+
+
 
 	setOpaque(false);
 }
 
 AudioPlayer::~AudioPlayer()
 {
-	deviceManager.removeChangeListener(this);
 }
 
 //==============================================================================
-void AudioPlayer::prepareToPlay(int samplesPerBlockExpected, double sampleRate)
-{
 
-}
-
-void AudioPlayer::getNextAudioBlock(const AudioSourceChannelInfo& bufferToFill)
-{
-
-}
-
-void AudioPlayer::releaseResources()
-{
-
-}
 
 //==============================================================================
 void AudioPlayer::paint(Graphics& g)
@@ -103,7 +84,6 @@ void AudioPlayer::resized()
 	const int transport_button_width = transport_bounds.getWidth() / 4;
 	const int reduce_amount = 3;
 	openButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
-	settingButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
 	playButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
 	stopButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
 	waveform->setBounds(r);
@@ -114,10 +94,6 @@ void AudioPlayer::buttonClicked(Button *button)
 	if (button == openButton.get())
 	{
 		openButtonClicked();
-	}
-	else if (button == settingButton.get())
-	{
-		settingButtonClicked();
 	}
 	else if (button == playButton.get())
 	{
@@ -162,7 +138,7 @@ void AudioPlayer::openButtonClicked()
 {
 	FileChooser chooser("Select a audio file to play...",
 		{},
-		formatManager.getWildcardForAllFormats());
+		format_manager_->getWildcardForAllFormats());
 	if (chooser.browseForFileToOpen())
 	{
 		File file(chooser.getResult());
@@ -172,29 +148,6 @@ void AudioPlayer::openButtonClicked()
 	}
 }
 
-void AudioPlayer::settingButtonClicked()
-{
-	std::cout << "settingButton" << std::endl;
-	bool showMIDIInputOptions = false;
-	bool showMIDIOutputOption = false;
-	bool showChannelAsSterepPairs = true;
-	bool hideAdvancedOptions = false;
-
-	AudioDeviceSelectorComponent settings(deviceManager,
-		0, 0,//AudioInputChannels: min/Max
-		1, 2,//AudioOutputChannels: min/Max
-		showMIDIInputOptions,
-		showMIDIOutputOption,
-		showChannelAsSterepPairs,
-		hideAdvancedOptions);
-	settings.setSize(500, 400);
-	DialogWindow::showModalDialog(String("Audio Settings"),
-		&settings,
-		TopLevelWindow::getTopLevelWindow(0),
-		Colours::white,
-		true,
-		true,
-		true);}
 
 void AudioPlayer::playButtonClicked()
 {
@@ -218,19 +171,6 @@ void AudioPlayer::stopButtonClicked()
 	}
 }
 
-void AudioPlayer::changeListenerCallback(ChangeBroadcaster* source)
-{
-	if (source == &deviceManager)
-	{
-		AudioDeviceManager::AudioDeviceSetup setup;
-		deviceManager.getAudioDeviceSetup(setup);
-
-		if (setup.outputChannels.isZero())
-		{
-			setAudioFile(nullptr);
-		}
-	}
-}
 
 void AudioPlayer::changeTransportState(TransportState newState)
 {
@@ -282,8 +222,8 @@ void AudioPlayer::setAudioFile(File* file)
 	else
 	{
 		transportSource.setSource(nullptr);
-		readerSource.reset(new AudioFormatReaderSource(formatManager.createReaderFor(*file), true));
-		formatReader.reset(formatManager.createReaderFor(*file));
+		readerSource.reset(new AudioFormatReaderSource(format_manager_->createReaderFor(*file), true));
+		formatReader.reset(format_manager_->createReaderFor(*file));
 		transportSource.setSource(readerSource.get(),
 			0,
 			nullptr,
