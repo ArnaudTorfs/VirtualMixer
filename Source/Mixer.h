@@ -34,6 +34,11 @@
 	Describe your class and how it works here!
 																	//[/Comments]
 */
+class myLookAndFill : public LookAndFeel_V4
+{
+public:
+	void drawLinearSlider(Graphics&, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider&) override;
+};
 class Mixer : public Component, public Slider::Listener
 {
 public:
@@ -56,8 +61,11 @@ public:
 private:
 	OwnedArray<Slider> sliders_;
 
+	myLookAndFill look_;
+
 	ScopedPointer<Slider> cross_fader;
 	int number_of_channels_;
+
 
 
 	Rectangle<int>* channels_rectangles_;

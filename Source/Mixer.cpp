@@ -26,6 +26,23 @@
 //[MiscUserDefs] You can add your own user definitions and misc code here...
 //[/MiscUserDefs]
 
+void myLookAndFill::drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos,
+	float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider&)
+{
+	const int fader_slider_width = width * 0.06;
+	const auto fader_slider_rectangle = Rectangle<int>(width / 2 -fader_slider_width/2 , 0, fader_slider_width, height+y);
+	g.setColour(Colours::black);
+	g.fillRect(fader_slider_rectangle);
+
+
+	const int slider_height = 20;
+	const int slider_width = width * 0.8;
+
+	g.setColour(Colours::darkgrey);
+	const Rectangle<int> my_rectangle = Rectangle<int>(x+ width*0.1, sliderPos - (slider_height / 2.), slider_width, (slider_height / 2.));
+	g.fillRect(my_rectangle);
+}
+
 //==============================================================================
 Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels) {
 	//[Constructor_pre] You can add your own custom stuff here..
@@ -46,18 +63,22 @@ Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels) {
 	{
 		Slider* temp_slider = new Slider();
 
-		temp_slider->setSliderStyle(Slider::LinearBarVertical);
+		temp_slider->setSliderStyle(Slider::LinearVertical);
 
 		addAndMakeVisible(temp_slider);
 		temp_slider->addListener(this);
+
+		temp_slider->setLookAndFeel(&look_);
+		temp_slider->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
 
 		sliders_.add(temp_slider);
 	}
 
 	cross_fader = new Slider();
-	cross_fader->setSliderStyle(Slider::LinearBar);
+	cross_fader->setSliderStyle(Slider::LinearHorizontal);
 	addAndMakeVisible(cross_fader);
 	cross_fader->addListener(this);
+	cross_fader->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
 }
 
 Mixer::~Mixer()
@@ -81,6 +102,8 @@ void Mixer::paint(Graphics& g)
 
 	g.fillAll(Colours::grey);
 
+
+
 	//[UserPaint] Add your own custom painting code here..
 	//[/UserPaint]
 }
@@ -94,7 +117,7 @@ void Mixer::resized()
 	//[/UserResized]
 	auto r = getLocalBounds();
 
-	auto cross_fader_rectangle = r.removeFromBottom(r.getHeight() / 6);
+	const auto cross_fader_rectangle = r.removeFromBottom(r.getHeight() / 6);
 	const int channel_width = r.getWidth() / number_of_channels_;
 	const int channel_height = r.getHeight();
 
@@ -103,10 +126,10 @@ void Mixer::resized()
 	for (int channel = 0; channel < number_of_channels_; ++channel)
 	{
 		channels_rectangles_[channel] = r.removeFromLeft(channel_width);
-		sliders_[channel]->setBounds(channels_rectangles_[channel].removeFromBottom(channel_height / 2).reduced(channel_width/5, 0));
+		sliders_[channel]->setBounds(channels_rectangles_[channel].removeFromBottom(channel_height / 2).reduced(channel_width / 5, 0));
 	}
 
-	cross_fader->setBounds(cross_fader_rectangle.reduced(channel_width/3, channel_height/60));
+	cross_fader->setBounds(cross_fader_rectangle.reduced(channel_width / 3, channel_height / 60));
 
 }
 
