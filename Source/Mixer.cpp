@@ -146,9 +146,39 @@ void Mixer::sliderValueChanged(Slider* slider)
 
 void Mixer::set_slider_value(int channel, float value) const
 {
-	if (channel<number_of_channels_)
+	if (channel < number_of_channels_)
 	{
 		sliders_[channel]->setValue(value);
+	}
+}
+
+void Mixer::set_crossfader_value(const float value_in_range) const
+{
+	cross_fader->setValue(value_in_range);
+}
+
+void Mixer::onMidiPlayStopButtonPressed(int channel)
+{
+	if (channel < channels_->size())
+	{
+		AudioPlayer* channel_player = channels_->getRawDataPointer()[channel];
+		TransportState current_state = channel_player->getTransportState();
+		switch (current_state)
+		{
+		case TransportState::Play:
+			channel_player->stopButtonClicked();
+			break;
+		case TransportState::Stop:
+			channel_player->playButtonClicked();
+			break;
+		case TransportState::NoFile: break;
+		case TransportState::Pause:
+			channel_player->playButtonClicked();
+			break;
+
+		default:
+			break;
+		}
 	}
 }
 

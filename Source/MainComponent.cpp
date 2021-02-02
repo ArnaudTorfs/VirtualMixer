@@ -82,7 +82,7 @@ void MainComponent::changeListenerCallback(ChangeBroadcaster* source)
 void MainComponent::handleIncomingMidiMessage(MidiInput* source, const MidiMessage& message)
 {
 
-	(new IncomingMessageCallback(this, message, my_mixer))->post();
+	(new IncomingMessageCallback(this, message, source, my_mixer))->post();
 }
 
 void MainComponent::setting_button_clicked() const
@@ -126,8 +126,19 @@ void MainComponent::paint(Graphics& g)
 	// (Our component is opaque, so we must completely fill the background with a solid colour)
 	g.fillAll(Colours::transparentWhite);
 
-	g.setColour(Colours::white);
-	g.fillRect(settings_bar);
+}
+
+int MainComponent::get_settings_bar_height() const
+{
+	const int window_height = getLocalBounds().getHeight();
+	if (window_height < 600)
+	{
+		return window_height / 10;
+	}
+	else
+	{
+		return 60;
+	}
 }
 
 void MainComponent::resized()
@@ -137,7 +148,7 @@ void MainComponent::resized()
 	// update their positions.
 
 	auto r = getLocalBounds();
-	settings_bar = r.removeFromTop(70);
+	settings_bar = r.removeFromTop(get_settings_bar_height());
 	int reduceAmount = 3;
 
 	int number_of_elements = my_audio_players.size() + 1;
@@ -192,25 +203,59 @@ void MainComponent::set_midi_device_choice()
 
 	// if no enabled devices were found just use the first one in the list
 	if (midiInputList.getSelectedId() == 0)
-		setMidiInput(0);
+	{
+		const int index = midiInputs.size() - 1;
+		setMidiInput(index);
+	}
 
 }
 
 void IncomingMessageCallback::messageCallback()
 {
 
-	const float value_in_range = jmap(message.getControllerValue(), 0, 127, 0, 10);
-	switch (message.getControllerNumber())
+	if (message.isController())
 	{
 
-	case 52:
-		mixer->set_slider_value(0, value_in_range);
-		break;
-	case 57:
-		mixer->set_slider_value(1, value_in_range);
-		break;
-	default:
-		break;
+		const float value_in_range = jmap(message.getControllerValue(), 0, 127, 0, 10);
+		switch (message.getControllerNumber())
+		{
+
+		case 52://Left Slider
+			mixer->set_slider_value(0, value_in_range);
+			break;
+		case 57://Right Slider
+			mixer->set_slider_value(1, value_in_range);
+			break;
+
+		case 56://Cross Fader
+			mixer->set_crossfader_value(value_in_range);
+			break;
+		default:
+			DBG(message.getControllerNumber());
+			break;
+		}
+	}
+	else
+	{
+		switch (message.getNoteNumber())
+		{
+		case 15://Left Play Button
+			if (message.isNoteOn())
+			{
+				mixer->onMidiPlayStopButtonPressed(0);
+			}
+			break;
+		case 35://Right Play Button
+			if (message.isNoteOn())
+			{
+				mixer->onMidiPlayStopButtonPressed(1);
+			}
+			break;
+		default:
+			DBG(message.getNoteNumber());
+			DBG(message.getDescription());
+			break;
+		}
 	}
 }
 

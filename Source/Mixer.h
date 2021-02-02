@@ -56,8 +56,8 @@ public:
 	void sliderValueChanged(Slider *slider)override;
 
 	void set_slider_value(int channel, float value) const;
-
-
+	void set_crossfader_value(const float value_in_range) const;
+	void onMidiPlayStopButtonPressed(int channel);
 
 
 private:

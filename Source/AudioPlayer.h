@@ -61,11 +61,13 @@ public:
 	//==============================================================================
 	float getAudioLevel() const { return audio_level_; };
 	void setAudioLevel(float value);
-private:
-	void openButtonClicked();
+	//==============================================================================
+	void changeTransportState(TransportState newState);
+	TransportState getTransportState() { return state; };
 	void playButtonClicked();
 	void stopButtonClicked();
-	void changeTransportState(TransportState newState);
+private:
+	void openButtonClicked();
 	void setAudioFile(File* file);
 
 

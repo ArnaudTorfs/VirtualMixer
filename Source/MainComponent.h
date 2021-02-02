@@ -38,6 +38,7 @@ public:
 
     //==============================================================================
     void paint (Graphics&) override;
+    int get_settings_bar_height() const;
     void resized() override;
 
 
@@ -70,8 +71,8 @@ private:
 class IncomingMessageCallback : public juce::CallbackMessage
 {
 public:
-	IncomingMessageCallback(MainComponent* o, const juce::MidiMessage& m, Mixer*  _mixer)
-		: owner(o), message(m), mixer(_mixer)
+	IncomingMessageCallback(MainComponent* o, const juce::MidiMessage& m,MidiInput* _source, Mixer*  _mixer)
+		: owner(o), message(m), mixer(_mixer), source(_source)
 	{}
 
 	void messageCallback() override;
@@ -79,4 +80,5 @@ public:
 	Component::SafePointer<MainComponent> owner;
 	juce::MidiMessage message;
 	Mixer* mixer;
+	MidiInput* source;
 };
