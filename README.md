@@ -1,4 +1,4 @@
 # VirtualMixer
 
-A little mixing software made with the JUCE framework
+A small mixing software made with the JUCE framework
  
