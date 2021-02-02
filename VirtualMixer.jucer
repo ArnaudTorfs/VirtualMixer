@@ -7,6 +7,10 @@
       <FILE id="cv3ol2" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
       <FILE id="ydcV3T" name="Mixer.cpp" compile="1" resource="0" file="Source/Mixer.cpp"/>
       <FILE id="U6ip6G" name="Mixer.h" compile="0" resource="0" file="Source/Mixer.h"/>
+      <FILE id="yo95Kj" name="PlayingTrackInformationPanel.cpp" compile="1"
+            resource="0" file="Source/PlayingTrackInformationPanel.cpp"/>
+      <FILE id="mSEDK7" name="PlayingTrackInformationPanel.h" compile="0"
+            resource="0" file="Source/PlayingTrackInformationPanel.h"/>
       <FILE id="JYqNm9" name="Waveform.cpp" compile="1" resource="0" file="Source/Waveform.cpp"/>
       <FILE id="b7OLMJ" name="Waveform.h" compile="0" resource="0" file="Source/Waveform.h"/>
     </GROUP>
