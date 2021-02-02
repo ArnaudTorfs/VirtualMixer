@@ -41,7 +41,6 @@ PlayingTrackInformationPanel::PlayingTrackInformationPanel()
 
 	addAndMakeVisible(titleLabel);
 	titleLabel.setColour(0x1000281, Colours::black);
-	titleLabel.setText("0:00/0:00", NotificationType::dontSendNotification);
 
 
 	addAndMakeVisible(artistLabel);
@@ -81,7 +80,7 @@ void PlayingTrackInformationPanel::resized()
 {
 	Rectangle<int> r = getLocalBounds();
 	const int local_width = r.getWidth();
-	artist_name_panel = r.removeFromLeft(local_width / 5);
+	artistLabel.setBounds(r.removeFromLeft(local_width / 5));
 	titleLabel.setBounds(r.removeFromLeft(local_width / 4));
 	timeLabel.setBounds(r.removeFromRight(local_width / 3));
 }
