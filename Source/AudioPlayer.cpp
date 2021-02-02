@@ -112,12 +112,13 @@ void AudioPlayer::filesDropped(const StringArray& file_string, int, int)
 	waveform->readFromFile(file);
 	setAudioFile(&file);
 	changeTransportState(TransportState::Stop);
+	DBG(file.getFullPathName());
 }
 
 bool AudioPlayer::isInterestedInFileDrag(const StringArray& files)
 {
 	const String file_name = files[0];
-	if (file_name.contains(".wav"))
+	if (file_name.contains(".wav") || file_name.contains(".mp3"))
 	{
 		return true;
 

@@ -11,6 +11,9 @@
             resource="0" file="Source/PlayingTrackInformationPanel.cpp"/>
       <FILE id="mSEDK7" name="PlayingTrackInformationPanel.h" compile="0"
             resource="0" file="Source/PlayingTrackInformationPanel.h"/>
+      <FILE id="lNhq72" name="TrackSelector.cpp" compile="1" resource="0"
+            file="Source/TrackSelector.cpp"/>
+      <FILE id="K0N8V4" name="TrackSelector.h" compile="0" resource="0" file="Source/TrackSelector.h"/>
       <FILE id="JYqNm9" name="Waveform.cpp" compile="1" resource="0" file="Source/Waveform.cpp"/>
       <FILE id="b7OLMJ" name="Waveform.h" compile="0" resource="0" file="Source/Waveform.h"/>
     </GROUP>

@@ -28,6 +28,9 @@ MainComponent::MainComponent()
 	my_mixer = new Mixer(&my_audio_players);
 	addAndMakeVisible(my_mixer);
 
+	track_selector_ = new TrackSelector();
+	addAndMakeVisible(track_selector_);
+
 
 	settingButton = std::make_unique<TextButton>("settingButton");
 	addAndMakeVisible(settingButton.get());
@@ -148,7 +151,15 @@ void MainComponent::resized()
 	// update their positions.
 
 	auto r = getLocalBounds();
+	int localHeight = getLocalBounds().getHeight();
 	settings_bar = r.removeFromTop(get_settings_bar_height());
+
+	if (localHeight> 550)
+	{
+		track_selector_->setBounds(r.removeFromBottom(localHeight-550));
+	}
+
+
 	int reduceAmount = 3;
 
 	int number_of_elements = my_audio_players.size() + 1;

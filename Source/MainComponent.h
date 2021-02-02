@@ -11,6 +11,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioPlayer.h"
 #include "Mixer.h"
+#include "TrackSelector.h"
 
 class AudioPlayer;
 //==============================================================================
@@ -44,12 +45,12 @@ public:
 
 
 private:
-	void postMessageToList(const juce::MidiMessage& message, const juce::String& source);
 	void setMidiInput(int index);
 	void set_midi_device_choice();
 
 	OwnedArray<AudioPlayer> my_audio_players;
 	ScopedPointer<Mixer> my_mixer;
+	ScopedPointer<TrackSelector> track_selector_;
 
 	ComboBox midiInputList;                    
 
