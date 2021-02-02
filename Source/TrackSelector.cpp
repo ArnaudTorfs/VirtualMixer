@@ -29,14 +29,25 @@
 
 void TrackSelector::load_data()
 {
-	const String filePath = R"(D:\SOUNDS\FL Studio\Projects\ABLETON\Exports)";
-	File myfile = File(filePath);
-	audio_files = myfile.findChildFiles(File::findFiles, true, "*.wav;*.mp3");
-	for (auto file : audio_files)
-	{
-		DBG(file.getFileName());
-	}
+	const String file_path = R"(D:\SOUNDS\FL Studio\Projects\ABLETON\Exports)";
+	const File search_directory = File(file_path);
+	audio_files = search_directory.findChildFiles(File::findFiles, true, "*.wav;*.mp3");
 	number_of_rows = audio_files.size();
+
+
+	//TODO: extract ID3 TAG FROM mp3
+	// for (auto audio_file : audio_files)
+	// {
+	// 	MemoryBlock block;
+	// 	audio_file.loadFileAsData(block);
+	// 	// block.removeSection(0, block.getSize() - 128);
+	// 	auto* pointer = block.getData();
+	// 	std::string *sp = static_cast<std::string*>(block.getData());
+	// 	char* a = block.begin();
+	// 	DBG(*a);
+	// 	// std::string string = *pointer;
+	// 	int x = 5;
+	// }
 }
 
 //==============================================================================
