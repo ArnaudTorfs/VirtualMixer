@@ -25,6 +25,10 @@ Waveform::Waveform(AudioTransportSource& transportSource_, int sourceSamplesPerT
 	thumbnail_total->addChangeListener(this);
 	thumbnail_zoomed->addChangeListener(this);
 
+
+	track_information_panel_ = new PlayingTrackInformationPanel();
+	addAndMakeVisible(track_information_panel_);
+
 	startTimerHz(60);
 }
 
@@ -38,14 +42,21 @@ void Waveform::readFromFile(File& file)
 	thumbnail_zoomed->setSource(new FileInputSource(file));
 	formatReader.reset(formatManager.createReaderFor(file));
 	transportPosition = Range<double>(0.0, thumbnail_total->getTotalLength());
+
+	if (file.getFileExtension() == (".mp3"))
+	{
+
+	}
+	else
+	{
+		track_information_panel_->set_track_title(file.getFileNameWithoutExtension());
+	}
 }
 
 void Waveform::paint(Graphics& g)
 {
 	if (thumbnail_total->getTotalLength() > 0.0)
 	{
-		Rectangle<int> bottomThumbArea = getLocalBounds();
-		Rectangle<int> topThumbArea = bottomThumbArea.removeFromTop(getLocalBounds().getHeight() / 2);
 
 
 		g.setGradientFill(ColourGradient(Colour::fromRGBA(255, 255, 255, 255), topThumbArea.getX(), topThumbArea.getHeight() / 2, Colour::fromRGBA(255, 255, 255, 101), topThumbArea.getWidth(), topThumbArea.getHeight() / 2, false));
@@ -57,8 +68,6 @@ void Waveform::paint(Graphics& g)
 
 			thumbnail_zoomed->drawChannel(g, bottomThumbArea.reduced(2),
 				transportPosition.getStart(), transportPosition.getEnd(), 0, 1.0f);
-
-
 		}
 		else
 		{
@@ -82,9 +91,13 @@ void Waveform::resized()
 {
 
 	auto r = getLocalBounds();
+	track_information_panel_->setBounds(r.removeFromTop(20));
 	auto transportBounds = r.removeFromBottom(30);
 	int transportButtonWidth = transportBounds.getWidth() / 5;
 	int reduceAmount = 3;
+
+	bottomThumbArea = getLocalBounds();
+	topThumbArea = bottomThumbArea.removeFromTop(getLocalBounds().getHeight() / 2);
 }
 
 void Waveform::setTransportFollowing(bool transportFollowing)
@@ -107,5 +120,6 @@ void Waveform::timerCallback()
 	double currentTime = transportSource.getCurrentPosition();
 	transportPosition.setStart(currentTime);
 	transportPosition.setEnd(currentTime + 4.0);
+	track_information_panel_->set_time_label_text(currentTime, transportSource.getLengthInSeconds());
 	repaint();
 }

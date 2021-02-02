@@ -57,7 +57,7 @@ AudioPlayer::AudioPlayer(AudioFormatManager* formatManager, AudioDeviceManager* 
 	device_manager_->addAudioCallback(&sourcePlayer);
 	waveform = std::make_unique<Waveform>(transportSource, 512);
 	addAndMakeVisible(waveform.get());
-	//transportSource.addChangeListener(this);
+
 
 
 	setOpaque(false);
@@ -79,9 +79,11 @@ void AudioPlayer::paint(Graphics& g)
 void AudioPlayer::resized()
 {
 	auto r = getLocalBounds();
+
 	auto transport_bounds = r.removeFromBottom(30);
 	const int transport_button_width = transport_bounds.getWidth() / 4;
 	const int reduce_amount = 3;
+
 	openButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
 	playButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));
 	stopButton->setBounds(transport_bounds.removeFromLeft(transport_button_width).reduced(reduce_amount));

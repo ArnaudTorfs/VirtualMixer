@@ -21,6 +21,7 @@
 
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "math.h"
 //[/Headers]
 
 
@@ -46,6 +47,9 @@ public:
 
     void paint (Graphics& g) override;
     void resized() override;
+    //==============================================================================
+	void set_time_label_text(double currentTime, double totalTime);
+	void set_track_title(String title);
 
 
 
@@ -54,6 +58,15 @@ private:
     //[/UserVariables]
 
     //==============================================================================
+	Rectangle<int> track_name_panel;
+	Rectangle<int> artist_name_panel;
+	Rectangle<int> time_panel;
+    //==============================================================================
+	Label timeLabel;
+	Label titleLabel;
+	Label artistLabel;
+    //==============================================================================
+
 
 
     //==============================================================================

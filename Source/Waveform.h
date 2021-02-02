@@ -1,4 +1,5 @@
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "PlayingTrackInformationPanel.h"
 
 class Waveform :
 	public Component,
@@ -27,5 +28,14 @@ private:
 	std::unique_ptr<AudioFormatReader> formatReader;
 	int sourceSamplesPerThumbnailSample;
 	bool enableTransportFollow = false;
+
+
+	ScopedPointer<PlayingTrackInformationPanel> track_information_panel_;
+
+
+	//==============================================================================
+	Rectangle<int> bottomThumbArea;
+	Rectangle<int> topThumbArea;
+
 };
 

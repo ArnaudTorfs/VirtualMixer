@@ -84,6 +84,7 @@ private:
 	TransportState state;
 
 
+	//==============================================================================
 	float audio_level_;
 	AudioFormatManager* format_manager_;
 	AudioDeviceManager* device_manager_;
