@@ -27,10 +27,11 @@
 //[/MiscUserDefs]
 
 void myLookAndFill::drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos,
-	float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider&)
+                                     float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider&)
 {
 	const int fader_slider_width = width * 0.06;
-	const auto fader_slider_rectangle = Rectangle<int>(width / 2 - fader_slider_width / 2, 0, fader_slider_width, height + y);
+	const auto fader_slider_rectangle = Rectangle<int>(width / 2 - fader_slider_width / 2, 0, fader_slider_width,
+	                                                   height + y);
 	g.setColour(Colours::black);
 	g.fillRect(fader_slider_rectangle);
 
@@ -39,19 +40,20 @@ void myLookAndFill::drawLinearSlider(Graphics& g, int x, int y, int width, int h
 	const int slider_width = width * 0.8;
 
 	g.setColour(Colours::darkgrey);
-	const Rectangle<int> my_rectangle = Rectangle<int>(x + width * 0.1, sliderPos - (slider_height / 2.), slider_width, (slider_height / 2.));
+	const Rectangle<int> my_rectangle = Rectangle<int>(x + width * 0.1, sliderPos - (slider_height / 2.), slider_width,
+	                                                   (slider_height / 2.));
 	g.fillRect(my_rectangle);
 }
 
 //==============================================================================
-Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels) {
+Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels)
+{
 	//[Constructor_pre] You can add your own custom stuff here..
 	//[/Constructor_pre]
 
 
 	//[UserPreSize]
 	//[/UserPreSize]
-
 
 
 	//[Constructor] You can add your own custom stuff here..
@@ -64,7 +66,7 @@ Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels) {
 		channel_parameters* temp_channel_parameter = new channel_parameters(&look_);
 
 		addAndMakeVisible(temp_channel_parameter);
-		temp_channel_parameter->addListener(this);
+		temp_channel_parameter->add_listener(this);
 
 		channels_parameters_.add(temp_channel_parameter);
 	}
@@ -82,7 +84,6 @@ Mixer::~Mixer()
 	//[/Destructor_pre]
 
 
-
 	//[Destructor]. You can add your own custom destruction code here..
 	//[/Destructor]
 
@@ -96,7 +97,6 @@ void Mixer::paint(Graphics& g)
 	//[/UserPrePaint]
 
 	g.fillAll(Colours::grey);
-
 
 
 	//[UserPaint] Add your own custom painting code here..
@@ -125,7 +125,6 @@ void Mixer::resized()
 	}
 
 	cross_fader->setBounds(cross_fader_rectangle.reduced(channel_width / 3, channel_height / 60));
-
 }
 
 void Mixer::sliderValueChanged(Slider* slider)
@@ -152,7 +151,27 @@ void Mixer::set_crossfader_value(const float value_in_range) const
 	cross_fader->setValue(value_in_range);
 }
 
-void Mixer::onMidiPlayStopButtonPressed(int channel)
+void Mixer::set_knob_value(int channel, Knob_Type knob_type, const float value) const
+{
+	switch (knob_type)
+	{
+	case Knob_Type::Gain:
+		channels_parameters_[channel]->gain_knob.setValue(value);
+		break;
+	case Knob_Type::HiEq:
+		channels_parameters_[channel]->eq_knobs[2]->setValue(value);
+		break;
+	case Knob_Type::MidEq:
+		channels_parameters_[channel]->eq_knobs[1]->setValue(value);
+		break;
+	case Knob_Type::LowEq:
+		channels_parameters_[channel]->eq_knobs[0]->setValue(value);
+		break;
+	default: break ;
+	}
+}
+
+void Mixer::onMidiPlayStopButtonPressed(int channel) const
 {
 	if (channel < channels_->size())
 	{

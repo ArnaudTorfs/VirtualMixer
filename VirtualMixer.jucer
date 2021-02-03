@@ -5,6 +5,10 @@
     <GROUP id="{81E78E63-347F-3D2B-D3BE-943168575567}" name="Components">
       <FILE id="fYYwwD" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
       <FILE id="cv3ol2" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
+      <FILE id="HlY5zB" name="ChannelParametersStrip.cpp" compile="1" resource="0"
+            file="Source/ChannelParametersStrip.cpp"/>
+      <FILE id="kX6v0w" name="ChannelParametersStrip.h" compile="0" resource="0"
+            file="Source/ChannelParametersStrip.h"/>
       <FILE id="ydcV3T" name="Mixer.cpp" compile="1" resource="0" file="Source/Mixer.cpp"/>
       <FILE id="U6ip6G" name="Mixer.h" compile="0" resource="0" file="Source/Mixer.h"/>
       <FILE id="yo95Kj" name="PlayingTrackInformationPanel.cpp" compile="1"
