@@ -61,17 +61,12 @@ Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels) {
 
 	for (int channel = 0; channel < number_of_channels_; ++channel)
 	{
-		Slider* temp_slider = new Slider();
+		channel_parameters* temp_channel_parameter = new channel_parameters(&look_);
 
-		temp_slider->setSliderStyle(Slider::LinearVertical);
+		addAndMakeVisible(temp_channel_parameter);
+		temp_channel_parameter->addListener(this);
 
-		addAndMakeVisible(temp_slider);
-		temp_slider->addListener(this);
-
-		temp_slider->setLookAndFeel(&look_);
-		temp_slider->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
-
-		sliders_.add(temp_slider);
+		channels_parameters_.add(temp_channel_parameter);
 	}
 
 	cross_fader = new Slider();
@@ -126,7 +121,7 @@ void Mixer::resized()
 	for (int channel = 0; channel < number_of_channels_; ++channel)
 	{
 		channels_rectangles_[channel] = r.removeFromLeft(channel_width);
-		sliders_[channel]->setBounds(channels_rectangles_[channel].removeFromBottom(channel_height / 2).reduced(channel_width / 5, 0));
+		channels_parameters_[channel]->setBounds(channels_rectangles_[channel].reduced(channel_width / 5, 0));
 	}
 
 	cross_fader->setBounds(cross_fader_rectangle.reduced(channel_width / 3, channel_height / 60));
@@ -137,7 +132,7 @@ void Mixer::sliderValueChanged(Slider* slider)
 {
 	for (int channel = 0; channel < number_of_channels_; ++channel)
 	{
-		if (slider == sliders_[channel])
+		if (slider == &channels_parameters_[channel]->volume_slider)
 		{
 			channels_->getRawDataPointer()[channel]->setAudioLevel(slider->getValue());
 		}
@@ -148,7 +143,7 @@ void Mixer::set_slider_value(int channel, float value) const
 {
 	if (channel < number_of_channels_)
 	{
-		sliders_[channel]->setValue(value);
+		channels_parameters_[channel]->volume_slider.setValue(value);
 	}
 }
 
