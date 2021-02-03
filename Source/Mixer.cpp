@@ -1,30 +1,5 @@
-/*
-  ==============================================================================
-
-  This is an automatically generated GUI class created by the Projucer!
-
-  Be careful when adding custom code to these files, as only the code within
-  the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
-  and re-saved.
-
-  Created with Projucer version: 5.4.4
-
-  ------------------------------------------------------------------------------
-
-  The Projucer is part of the JUCE library.
-  Copyright (c) 2017 - ROLI Ltd.
-
-  ==============================================================================
-*/
-
-//[Headers] You can add your own extra header files here...
-//[/Headers]
-
 #include "Mixer.h"
 
-
-//[MiscUserDefs] You can add your own user definitions and misc code here...
-//[/MiscUserDefs]
 
 void myLookAndFill::drawLinearSlider(Graphics& g, int x, int y, int width, int height, float sliderPos,
                                      float minSliderPos, float maxSliderPos, const Slider::SliderStyle, Slider&)
@@ -48,17 +23,7 @@ void myLookAndFill::drawLinearSlider(Graphics& g, int x, int y, int width, int h
 //==============================================================================
 Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels)
 {
-	//[Constructor_pre] You can add your own custom stuff here..
-	//[/Constructor_pre]
-
-
-	//[UserPreSize]
-	//[/UserPreSize]
-
-
-	//[Constructor] You can add your own custom stuff here..
-	//[/Constructor]
-
+	setName("MIXIER");
 	number_of_channels_ = channels->size();
 
 	for (int channel = 0; channel < number_of_channels_; ++channel)
@@ -66,7 +31,12 @@ Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels)
 		channel_parameters* temp_channel_parameter = new channel_parameters(&look_);
 
 		addAndMakeVisible(temp_channel_parameter);
-		temp_channel_parameter->add_listener(this);
+		temp_channel_parameter->volume_slider.addListener(this);
+		temp_channel_parameter->gain_knob.addListener(this);
+		for (auto eq_knob : temp_channel_parameter->eq_knobs)
+		{
+			eq_knob->addListener(this);
+		}
 
 		channels_parameters_.add(temp_channel_parameter);
 	}
@@ -76,6 +46,7 @@ Mixer::Mixer(OwnedArray<AudioPlayer>* channels) : channels_(channels)
 	addAndMakeVisible(cross_fader);
 	cross_fader->addListener(this);
 	cross_fader->setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+	cross_fader->setName("Cross");
 }
 
 Mixer::~Mixer()
@@ -134,6 +105,17 @@ void Mixer::sliderValueChanged(Slider* slider)
 		if (slider == &channels_parameters_[channel]->volume_slider)
 		{
 			channels_->getRawDataPointer()[channel]->setAudioLevel(slider->getValue());
+		}
+		// if (slider == &channels_parameters_[channel]->gain_knob)
+		// {
+		// 	channels_->getRawDataPointer()[channel]->setAudioLevel(slider->getValue());
+		// }
+		for (auto eq_knob : channels_parameters_[channel]->eq_knobs)
+		{
+			if (slider == eq_knob)
+			{
+				channels_->getRawDataPointer()[channel]->setFrequecyBandLevel(slider->getValue());
+			}
 		}
 	}
 }

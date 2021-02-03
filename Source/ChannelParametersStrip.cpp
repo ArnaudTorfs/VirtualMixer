@@ -1,14 +1,5 @@
-/*
-  ==============================================================================
-
-    ChannelParametersStrip.cpp
-    Created: 3 Feb 2021 11:55:58am
-    Author:  arnau
-
-  ==============================================================================
-*/
-
 #include "ChannelParametersStrip.h"
+
 
 channel_parameters::channel_parameters(LookAndFeel_V4* look_)
 {
@@ -17,6 +8,7 @@ channel_parameters::channel_parameters(LookAndFeel_V4* look_)
 
 	volume_slider.setLookAndFeel(look_);
 	volume_slider.setTextBoxStyle(Slider::NoTextBox, true, 0, 0);
+	volume_slider.setName("MySlider");
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -33,17 +25,11 @@ channel_parameters::channel_parameters(LookAndFeel_V4* look_)
 
 channel_parameters::~channel_parameters()
 {
+	
 }
 
-void channel_parameters::add_listener(Mixer* mixer)
+void channel_parameters::paint(Graphics& g)
 {
-	Slider::Listener* listener = (Slider::Listener*)mixer;
-	volume_slider.addListener(listener);
-	for (auto* eq_knob : eq_knobs)
-	{
-		eq_knob->addListener(listener);
-	}
-	gain_knob.addListener(listener);
 }
 
 void channel_parameters::resized()
