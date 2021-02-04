@@ -126,6 +126,12 @@ bool AudioPlayer::isInterestedInFileDrag(const StringArray& files)
 	return false;
 }
 
+
+void AudioPlayer::setFrequecyBandLevel(Knob_Type knob_type,  float value)
+{
+	transportSource.setFrequencyBandLevel(knob_type, value);
+}
+
 void AudioPlayer::setAudioLevel(float value)
 {
 	//Receive a value between 0 and 10.0
@@ -133,7 +139,6 @@ void AudioPlayer::setAudioLevel(float value)
 	//Set a Value between 0 and 1;
 	transportSource.setGain(audio_level_);
 }
-
 //==============================================================================
 //private
 void AudioPlayer::openButtonClicked()

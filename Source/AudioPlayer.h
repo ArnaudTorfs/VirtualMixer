@@ -1,26 +1,9 @@
-/*
-  ==============================================================================
-
-  This is an automatically generated GUI class created by the Projucer!
-
-  Be careful when adding custom code to these files, as only the code within
-  the "//[xyz]" and "//[/xyz]" sections will be retained when the file is loaded
-  and re-saved.
-
-  Created with Projucer version: 5.4.4
-
-  ------------------------------------------------------------------------------
-
-  The Projucer is part of the JUCE library.
-  Copyright (c) 2017 - ROLI Ltd.
-
-  ==============================================================================
-*/
-
 #pragma once
 
 //[Headers]     -- You can add your own extra header files here --
 #include  "Waveform.h"
+#include "MixableAudioSource.h"
+#include "Knob_Type.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 //[/Headers]
 
@@ -51,6 +34,9 @@ public:
 	AudioPlayer(AudioFormatManager* formatManager, AudioDeviceManager* deviceManager);
 	~AudioPlayer();
 	//==============================================================================
+	float getAudioLevel() const { return audio_level_; }
+	void setFrequecyBandLevel(Knob_Type, float value);;
+	void setAudioLevel(float value);
 	//==============================================================================
 	void paint(Graphics& g) override;
 	void resized() override;
@@ -58,9 +44,6 @@ public:
 	//==============================================================================
 	void filesDropped(const StringArray&, int, int) override;
 	bool isInterestedInFileDrag(const StringArray& files) override;
-	//==============================================================================
-	float getAudioLevel() const { return audio_level_; };
-	void setAudioLevel(float value);
 	//==============================================================================
 	void changeTransportState(TransportState newState);
 	TransportState getTransportState() { return state; };
@@ -79,13 +62,13 @@ private:
 	std::unique_ptr<AudioFormatReaderSource> readerSource;
 	std::unique_ptr<AudioFormatReader> formatReader;
 	AudioSourcePlayer sourcePlayer;
-	AudioTransportSource transportSource;
+	MixableAudioSource transportSource;
 	std::unique_ptr<Waveform> waveform;
 	TransportState state;
 
 
-	//==============================================================================
 	float audio_level_;
+	//==============================================================================
 	AudioFormatManager* format_manager_;
 	AudioDeviceManager* device_manager_;
 

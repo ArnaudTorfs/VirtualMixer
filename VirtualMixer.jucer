@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="aFWjGh" name="VirtualMixer" projectType="guiapp" jucerVersion="5.4.4">
+<JUCERPROJECT id="aFWjGh" name="VirtualMixer" projectType="guiapp" displaySplashScreen="1"
+              jucerFormatVersion="1">
   <MAINGROUP id="Z5mbt3" name="VirtualMixer">
+    <GROUP id="{921989F1-2DFF-3704-7238-51A29E1B1E17}" name="Utils">
+      <FILE id="cxZiql" name="Knob_Type.h" compile="0" resource="0" file="Source/Knob_Type.h"/>
+    </GROUP>
     <GROUP id="{81E78E63-347F-3D2B-D3BE-943168575567}" name="Components">
       <FILE id="fYYwwD" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
       <FILE id="cv3ol2" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>
+      <FILE id="HlY5zB" name="ChannelParametersStrip.cpp" compile="1" resource="0"
+            file="Source/ChannelParametersStrip.cpp"/>
+      <FILE id="kX6v0w" name="ChannelParametersStrip.h" compile="0" resource="0"
+            file="Source/ChannelParametersStrip.h"/>
+      <FILE id="SgY01K" name="MixableAudioSource.cpp" compile="1" resource="0"
+            file="Source/MixableAudioSource.cpp"/>
+      <FILE id="S44DuJ" name="MixableAudioSource.h" compile="0" resource="0"
+            file="Source/MixableAudioSource.h"/>
       <FILE id="ydcV3T" name="Mixer.cpp" compile="1" resource="0" file="Source/Mixer.cpp"/>
       <FILE id="U6ip6G" name="Mixer.h" compile="0" resource="0" file="Source/Mixer.h"/>
       <FILE id="yo95Kj" name="PlayingTrackInformationPanel.cpp" compile="1"
@@ -44,6 +56,7 @@
         <MODULEPATH id="juce_gui_extra" path="../JUCE/modules"/>
         <MODULEPATH id="juce_opengl" path="../JUCE/modules"/>
         <MODULEPATH id="juce_audio_utils" path="../JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../JUCE/modules"/>
       </MODULEPATHS>
     </VS2017>
   </EXPORTFORMATS>
@@ -56,6 +69,7 @@
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

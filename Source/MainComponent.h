@@ -83,3 +83,5 @@ public:
 	Mixer* mixer;
 	MidiInput* source;
 };
+
+

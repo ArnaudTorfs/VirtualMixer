@@ -11,13 +11,13 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-
 	formatManager.registerBasicFormats();
 
-	my_audio_players = OwnedArray<AudioPlayer>();
-
-	my_audio_players.add(new AudioPlayer(&formatManager, &deviceManager));
-	my_audio_players.add(new AudioPlayer(&formatManager, &deviceManager));
+	const int number_of_channels = 2;
+	for (int channel = 0; channel < number_of_channels; ++channel)
+	{
+		my_audio_players.add(new AudioPlayer(&formatManager, &deviceManager));
+	}
 
 	for (auto* my_audio_player : my_audio_players)
 	{
@@ -34,6 +34,7 @@ MainComponent::MainComponent()
 
 	settingButton = std::make_unique<TextButton>("settingButton");
 	addAndMakeVisible(settingButton.get());
+
 	settingButton->setButtonText("Audio Preference");
 	settingButton->addListener(this);
 
@@ -45,13 +46,11 @@ MainComponent::MainComponent()
 	set_midi_device_choice();
 
 
-	setSize(600, 400);
-
+	setSize(800, 500);
 }
 
 MainComponent::~MainComponent()
 {
-
 	deviceManager.removeChangeListener(this);
 }
 
@@ -84,7 +83,6 @@ void MainComponent::changeListenerCallback(ChangeBroadcaster* source)
 
 void MainComponent::handleIncomingMidiMessage(MidiInput* source, const MidiMessage& message)
 {
-
 	(new IncomingMessageCallback(this, message, source, my_mixer))->post();
 }
 
@@ -97,25 +95,24 @@ void MainComponent::setting_button_clicked() const
 	bool hideAdvancedOptions = false;
 
 	AudioDeviceSelectorComponent settings(deviceManager,
-		0, 0,//AudioInputChannels: min/Max
-		1, 2,//AudioOutputChannels: min/Max
-		showMIDIInputOptions,
-		showMIDIOutputOption,
-		showChannelAsSterepPairs,
-		hideAdvancedOptions);
+	                                      0, 0, //AudioInputChannels: min/Max
+	                                      1, 2, //AudioOutputChannels: min/Max
+	                                      showMIDIInputOptions,
+	                                      showMIDIOutputOption,
+	                                      showChannelAsSterepPairs,
+	                                      hideAdvancedOptions);
 	settings.setSize(500, 400);
 	DialogWindow::showModalDialog(String("Audio Settings"),
-		&settings,
-		TopLevelWindow::getTopLevelWindow(0),
-		Colours::wheat,
-		true,
-		true,
-		true);
+	                              &settings,
+	                              TopLevelWindow::getTopLevelWindow(0),
+	                              Colours::wheat,
+	                              true,
+	                              true,
+	                              true);
 }
 
 void MainComponent::buttonClicked(Button* button)
 {
-
 	if (button == settingButton.get())
 	{
 		setting_button_clicked();
@@ -128,7 +125,6 @@ void MainComponent::paint(Graphics& g)
 {
 	// (Our component is opaque, so we must completely fill the background with a solid colour)
 	g.fillAll(Colours::transparentWhite);
-
 }
 
 int MainComponent::get_settings_bar_height() const
@@ -154,9 +150,9 @@ void MainComponent::resized()
 	int localHeight = getLocalBounds().getHeight();
 	settings_bar = r.removeFromTop(get_settings_bar_height());
 
-	if (localHeight> 550)
+	if (localHeight > 550)
 	{
-		track_selector_->setBounds(r.removeFromBottom(localHeight-550));
+		track_selector_->setBounds(r.removeFromBottom(localHeight - 550));
 	}
 
 
@@ -183,8 +179,6 @@ void MainComponent::resized()
 
 	settingButton->setBounds(settings_bar.removeFromLeft(90).reduced(reduceAmount));
 	midiInputList.setBounds(settings_bar.removeFromLeft(190).reduced(reduceAmount));
-
-
 }
 
 
@@ -218,27 +212,42 @@ void MainComponent::set_midi_device_choice()
 		const int index = midiInputs.size() - 1;
 		setMidiInput(index);
 	}
-
 }
 
 void IncomingMessageCallback::messageCallback()
 {
-
 	if (message.isController())
 	{
-
-		const float value_in_range = jmap(message.getControllerValue(), 0, 127, 0, 10);
+		const float value_in_range = jmap((float)message.getControllerValue(), 0.f, 127.f, 0.f, 10.f);
 		switch (message.getControllerNumber())
 		{
+		case 53:
+			mixer->set_knob_value(0, Knob_Type::HiEq, value_in_range);
+			break;
+		case 54:
+			mixer->set_knob_value(0, Knob_Type::MidEq, value_in_range);
+			break;
+		case 55:
+			mixer->set_knob_value(0, Knob_Type::LowEq, value_in_range);
+			break;
 
-		case 52://Left Slider
+		case 58:
+			mixer->set_knob_value(1, Knob_Type::HiEq, value_in_range);
+			break;
+		case 59:
+			mixer->set_knob_value(1, Knob_Type::MidEq, value_in_range);
+			break;
+		case 60:
+			mixer->set_knob_value(1, Knob_Type::LowEq, value_in_range);
+			break;
+		case 52: //Left Slider
 			mixer->set_slider_value(0, value_in_range);
 			break;
-		case 57://Right Slider
+		case 57: //Right Slider
 			mixer->set_slider_value(1, value_in_range);
 			break;
 
-		case 56://Cross Fader
+		case 56: //Cross Fader
 			mixer->set_crossfader_value(value_in_range);
 			break;
 		default:
@@ -250,13 +259,13 @@ void IncomingMessageCallback::messageCallback()
 	{
 		switch (message.getNoteNumber())
 		{
-		case 15://Left Play Button
+		case 15: //Left Play Button
 			if (message.isNoteOn())
 			{
 				mixer->onMidiPlayStopButtonPressed(0);
 			}
 			break;
-		case 35://Right Play Button
+		case 35: //Right Play Button
 			if (message.isNoteOn())
 			{
 				mixer->onMidiPlayStopButtonPressed(1);
@@ -286,4 +295,3 @@ void MainComponent::setMidiInput(int index)
 
 	midi_input_device_index = index;
 }
-
