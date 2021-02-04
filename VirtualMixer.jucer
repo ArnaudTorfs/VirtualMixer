@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="aFWjGh" name="VirtualMixer" projectType="guiapp" jucerVersion="5.4.4">
+<JUCERPROJECT id="aFWjGh" name="VirtualMixer" projectType="guiapp" displaySplashScreen="1"
+              jucerFormatVersion="1">
   <MAINGROUP id="Z5mbt3" name="VirtualMixer">
+    <GROUP id="{921989F1-2DFF-3704-7238-51A29E1B1E17}" name="Utils">
+      <FILE id="cxZiql" name="Knob_Type.h" compile="0" resource="0" file="Source/Knob_Type.h"/>
+    </GROUP>
     <GROUP id="{81E78E63-347F-3D2B-D3BE-943168575567}" name="Components">
       <FILE id="fYYwwD" name="AudioPlayer.cpp" compile="1" resource="0" file="Source/AudioPlayer.cpp"/>
       <FILE id="cv3ol2" name="AudioPlayer.h" compile="0" resource="0" file="Source/AudioPlayer.h"/>

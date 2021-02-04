@@ -3,6 +3,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include  "Waveform.h"
 #include "MixableAudioSource.h"
+#include "Knob_Type.h"
 #include "../JuceLibraryCode/JuceHeader.h"
 //[/Headers]
 
@@ -34,7 +35,7 @@ public:
 	~AudioPlayer();
 	//==============================================================================
 	float getAudioLevel() const { return audio_level_; }
-	void setFrequecyBandLevel(float value);;
+	void setFrequecyBandLevel(Knob_Type, float value);;
 	void setAudioLevel(float value);
 	//==============================================================================
 	void paint(Graphics& g) override;

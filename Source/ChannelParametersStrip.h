@@ -4,13 +4,6 @@
 
 
 class Mixer;
-enum class Knob_Type: int
-{
-	Gain,
-	HiEq,
-	MidEq,
-	LowEq,
-};
 
 class channel_parameters : public Component
 {

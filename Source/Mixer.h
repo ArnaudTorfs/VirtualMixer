@@ -3,6 +3,7 @@
 //[Headers]     -- You can add your own extra header files here --
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "AudioPlayer.h"
+#include "Knob_Type.h"
 #include "ChannelParametersStrip.h"
 //[/Headers]
 

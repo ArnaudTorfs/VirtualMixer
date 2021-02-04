@@ -29,7 +29,7 @@ Waveform::Waveform(AudioTransportSource& transportSource_, int sourceSamplesPerT
 	track_information_panel_ = new PlayingTrackInformationPanel();
 	addAndMakeVisible(track_information_panel_);
 
-	startTimerHz(60);
+	startTimerHz(120);
 }
 
 Waveform::~Waveform()
@@ -119,7 +119,7 @@ void Waveform::timerCallback()
 {
 	double currentTime = transportSource.getCurrentPosition();
 	transportPosition.setStart(currentTime);
-	transportPosition.setEnd(currentTime + 4.0);
+	transportPosition.setEnd(currentTime + 8.0);
 	track_information_panel_->set_time_label_text(currentTime, transportSource.getLengthInSeconds());
 	repaint();
 }

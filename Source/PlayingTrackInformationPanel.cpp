@@ -47,7 +47,6 @@ PlayingTrackInformationPanel::PlayingTrackInformationPanel()
 	artistLabel.setColour(0x1000281, Colours::black);
 
 
-
 	//[Constructor] You can add your own custom stuff here..
 	//[/Constructor]
 }
@@ -56,7 +55,6 @@ PlayingTrackInformationPanel::~PlayingTrackInformationPanel()
 {
 	//[Destructor_pre]. You can add your own custom destruction code here..
 	//[/Destructor_pre]
-
 
 
 	//[Destructor]. You can add your own custom destruction code here..
@@ -87,8 +85,8 @@ void PlayingTrackInformationPanel::resized()
 
 String timeToString(double current_time)
 {
-	const int seconds = floor(current_time);
-	const int minutes = seconds / 60;
+	const int seconds = (int)floor(current_time) % 60;
+	const int minutes = floor(current_time) / 60;
 
 	String secondsString;
 	if (seconds > 9)
@@ -143,4 +141,3 @@ END_JUCER_METADATA
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
-

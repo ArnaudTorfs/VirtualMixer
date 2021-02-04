@@ -110,12 +110,19 @@ void Mixer::sliderValueChanged(Slider* slider)
 		// {
 		// 	channels_->getRawDataPointer()[channel]->setAudioLevel(slider->getValue());
 		// }
-		for (auto eq_knob : channels_parameters_[channel]->eq_knobs)
+		auto* eq_knobs_array = channels_parameters_[channel]->eq_knobs.getRawDataPointer();
+
+		if (slider == eq_knobs_array[0])
 		{
-			if (slider == eq_knob)
-			{
-				channels_->getRawDataPointer()[channel]->setFrequecyBandLevel(slider->getValue());
-			}
+			channels_->getRawDataPointer()[channel]->setFrequecyBandLevel(Knob_Type::LowEq, slider->getValue());
+		}
+		if (slider == eq_knobs_array[1])
+		{
+			channels_->getRawDataPointer()[channel]->setFrequecyBandLevel(Knob_Type::MidEq, slider->getValue());
+		}
+		if (slider == eq_knobs_array[2])
+		{
+			channels_->getRawDataPointer()[channel]->setFrequecyBandLevel(Knob_Type::HiEq, slider->getValue());
 		}
 	}
 }

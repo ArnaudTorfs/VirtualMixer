@@ -218,7 +218,7 @@ void IncomingMessageCallback::messageCallback()
 {
 	if (message.isController())
 	{
-		const float value_in_range = jmap(message.getControllerValue(), 0, 127, 0, 10);
+		const float value_in_range = jmap((float)message.getControllerValue(), 0.f, 127.f, 0.f, 10.f);
 		switch (message.getControllerNumber())
 		{
 		case 53:
